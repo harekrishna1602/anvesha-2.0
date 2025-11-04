@@ -16,6 +16,7 @@ import OrderDashboardControls from '@/components/orders/OrderDashboardControls';
 import OrderList from '@/components/orders/OrderList';
 import CreateOrderDialog from '@/components/orders/CreateOrderDialog';
 import EditOrderDialog from '@/components/orders/EditOrderDialog';
+import OrderBottomBar from '@/components/orders/OrderBottomBar'; // Import the new component
 
 const orderStatuses: Enums<'order_status'>[] = ['Pending', 'Under Production', 'Ready for Dispatch', 'Completed'];
 
@@ -27,6 +28,7 @@ const Orders: React.FC = () => {
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<OrderWithDetails | null>(null);
+  const [selectedOrderIds, setSelectedOrderIds] = useState<string[]>([]); // New state for selected order IDs
 
   const { data: orders, isLoading: isLoadingOrders, error: ordersError } = useQuery({
     queryKey: ['orders', statusFilter, searchTerm],
@@ -98,6 +100,20 @@ const Orders: React.FC = () => {
     setIsEditDialogOpen(true);
   };
 
+  const handleSelectOrder = (id: string, isSelected: boolean) => {
+    setSelectedOrderIds(prev =>
+      isSelected ? [...prev, id] : prev.filter(orderId => orderId !== id)
+    );
+  };
+
+  const handleClearSelection = () => {
+    setSelectedOrderIds([]);
+  };
+
+  const handleOrderUpdatedInBar = (orderId: string) => {
+    setSelectedOrderIds(prev => prev.filter(id => id !== orderId));
+  };
+
   if (isLoadingOrders || isLoadingCustomers || isLoadingProducts) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
       <p className="text-xl text-gray-600 dark:text-gray-400">Loading orders...</p>
@@ -111,7 +127,7 @@ const Orders: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="w-full max-w-4xl space-y-8">
+      <div className="w-full max-w-4xl space-y-8 pb-20"> {/* Added pb-20 to make space for the bottom bar */}
         <Card className="w-full">
           <CardHeader>
             <CardTitle className="text-2xl">Order Dashboard</CardTitle>
@@ -132,7 +148,8 @@ const Orders: React.FC = () => {
                 orders={orders}
                 onEditClick={handleEditClick}
                 onDeleteClick={handleDeleteOrder}
-                isDeleting={deleteOrderMutation.isPending}
+                selectedOrderIds={selectedOrderIds}
+                onSelectOrder={handleSelectOrder}
               />
             ) : (
               <p className="text-gray-500 dark:text-gray-400">No orders found.</p>
@@ -162,6 +179,12 @@ const Orders: React.FC = () => {
           isUpdating={updateOrderMutation.isPending}
         />
       )}
+
+      <OrderBottomBar
+        selectedOrderIds={selectedOrderIds}
+        onClearSelection={handleClearSelection}
+        onOrderUpdated={handleOrderUpdatedInBar}
+      />
     </DashboardLayout>
   );
 };

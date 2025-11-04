@@ -4,6 +4,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Edit, Trash2 } from 'lucide-react';
 import { OrderWithDetails } from '@/services/orderService';
 import { format } from 'date-fns';
@@ -12,9 +13,11 @@ interface OrderListProps {
   orders: OrderWithDetails[];
   onEditClick: (order: OrderWithDetails) => void;
   onDeleteClick: (id: string) => void;
+  selectedOrderIds: string[];
+  onSelectOrder: (id: string, isSelected: boolean) => void;
 }
 
-const OrderList: React.FC<OrderListProps> = ({ orders, onEditClick, onDeleteClick }) => {
+const OrderList: React.FC<OrderListProps> = ({ orders, onEditClick, onDeleteClick, selectedOrderIds, onSelectOrder }) => {
   const getStatusColorClass = (status: string) => {
     switch (status) {
       case 'Pending':
@@ -39,7 +42,14 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onEditClick, onDeleteClic
           <Card key={order.id} className="flex flex-col">
             <CardHeader>
               <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">Order #{order.order_number}</h3>
+                <div className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`order-${order.id}`}
+                    checked={selectedOrderIds.includes(order.id)}
+                    onCheckedChange={(checked) => onSelectOrder(order.id, checked as boolean)}
+                  />
+                  <h3 className="font-semibold text-lg text-gray-900 dark:text-gray-100">Order #{order.order_number}</h3>
+                </div>
                 <div className="flex space-x-2">
                   <Button variant="outline" size="icon" onClick={() => onEditClick(order)}>
                     <Edit className="h-4 w-4" />
