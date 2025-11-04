@@ -1,4 +1,4 @@
-import { supabase } from '@/lib/supabase';
+import { supabase } from '@/integrations/supabase/client';
 import { TablesInsert, Tables } from '@/types/supabase';
 
 export const createCustomer = async (customer: TablesInsert<'Customers'>) => {
