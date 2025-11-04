@@ -3,12 +3,13 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Index from "./pages/Index";
+import DashboardHome from "./pages/DashboardHome"; // Import the new DashboardHome
+import Customers from "./pages/Customers"; // Import the renamed Customers page
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
-import Inventory from "./pages/Inventory"; // Import the new Inventory page
+import Inventory from "./pages/Inventory";
 import { SessionContextProvider, useSession } from "./components/SessionContextProvider";
 
 const queryClient = new QueryClient();
@@ -45,7 +46,15 @@ const App = () => (
               path="/"
               element={
                 <ProtectedRoute>
-                  <Index />
+                  <DashboardHome /> {/* New Dashboard Home */}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/customers"
+              element={
+                <ProtectedRoute>
+                  <Customers /> {/* Renamed Customers page */}
                 </ProtectedRoute>
               }
             />

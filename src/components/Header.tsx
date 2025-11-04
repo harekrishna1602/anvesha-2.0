@@ -6,7 +6,7 @@ import { LogOut } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
-import NotificationsDropdown from './NotificationsDropdown'; // Import the new component
+import NotificationsDropdown from './NotificationsDropdown';
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
@@ -28,6 +28,9 @@ const Header: React.FC = () => {
           <h1 className="text-xl font-bold tracking-tight">SK INDUSTRIES</h1>
           <nav className="flex items-center space-x-4">
             <Link to="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              Dashboard
+            </Link>
+            <Link to="/customers" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               Customers
             </Link>
             <Link to="/products" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
@@ -42,7 +45,7 @@ const Header: React.FC = () => {
           </nav>
         </div>
         <div className="flex items-center space-x-2">
-          <NotificationsDropdown /> {/* Add the notifications dropdown here */}
+          <NotificationsDropdown />
           <Button variant="outline" onClick={handleSignOut}>
             <LogOut className="mr-2 h-4 w-4" /> Sign Out
           </Button>
