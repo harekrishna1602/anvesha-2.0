@@ -193,7 +193,7 @@ const Products: React.FC = () => {
                     <div>
                       <p className="font-medium text-gray-900 dark:text-gray-100">{product.name}</p>
                       {product.description && <p className="text-sm text-gray-600 dark:text-gray-400">{product.description}</p>}
-                      <p className="text-sm text-gray-700 dark:text-gray-300">${product.price.toFixed(2)}</p>
+                      <p className="text-sm text-gray-700 dark:text-gray-300">₹{product.price.toFixed(2)}</p>
                     </div>
                     <div className="flex space-x-2">
                       <Button

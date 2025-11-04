@@ -32,7 +32,7 @@ const OrderItemForm: React.FC<OrderItemFormProps> = ({
         </SelectTrigger>
         <SelectContent>
           {products?.map(product => (
-            <SelectItem key={product.id} value={product.id}>{product.name} (${product.price.toFixed(2)})</SelectItem>
+            <SelectItem key={product.id} value={product.id}>{product.name} (₹{product.price.toFixed(2)})</SelectItem>
           ))}
         </SelectContent>
       </Select>
