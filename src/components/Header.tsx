@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate, Link } from 'react-router-router';
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import NotificationsDropdown from './NotificationsDropdown';
 
@@ -41,6 +41,9 @@ const Header: React.FC = () => {
             </Link>
             <Link to="/inventory" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               Inventory
+            </Link>
+            <Link to="/completed-orders" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              Completed Orders
             </Link>
           </nav>
         </div>
