@@ -10,6 +10,7 @@ import Login from "./pages/Login";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
 import Inventory from "./pages/Inventory";
+import CompletedOrders from "./pages/CompletedOrders"; // Import the new CompletedOrders page
 import { SessionContextProvider, useSession } from "./components/SessionContextProvider";
 
 const queryClient = new QueryClient();
@@ -79,6 +80,14 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Inventory />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/completed-orders"
+              element={
+                <ProtectedRoute>
+                  <CompletedOrders />
                 </ProtectedRoute>
               }
             />
