@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/ca
 import { Users, Package, ShoppingCart, Warehouse } from 'lucide-react';
 import PendingOrdersSummary from '@/components/dashboard/PendingOrdersSummary';
 import LowInventorySummary from '@/components/dashboard/LowInventorySummary';
-import RecentOrdersSummary from '@/components/dashboard/RecentOrdersSummary';
+import ReadyForDispatchSummary from '@/components/dashboard/ReadyForDispatchSummary'; // Import the new component
 
 const DashboardHome: React.FC = () => {
   return (
@@ -61,7 +61,7 @@ const DashboardHome: React.FC = () => {
           {/* Summary Panels */}
           <PendingOrdersSummary />
           <LowInventorySummary />
-          <RecentOrdersSummary />
+          <ReadyForDispatchSummary /> {/* Replaced RecentOrdersSummary */}
         </div>
       </div>
     </DashboardLayout>
