@@ -10,6 +10,9 @@ import { useSession } from '@/components/SessionContextProvider';
 import DashboardLayout from '@/components/DashboardLayout';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { Button } from '@/components/ui/button'; // Import Button
+import { ListChecks } from 'lucide-react'; // Import ListChecks icon
+import { Link } from 'react-router-dom'; // Import Link
 
 // Modular components for Orders page
 import OrderDashboardControls from '@/components/orders/OrderDashboardControls';
@@ -134,14 +137,21 @@ const Orders: React.FC = () => {
             <CardDescription>View and manage all customer orders.</CardDescription>
           </CardHeader>
           <CardContent>
-            <OrderDashboardControls
-              searchTerm={searchTerm}
-              setSearchTerm={setSearchTerm}
-              statusFilter={statusFilter}
-              setStatusFilter={setStatusFilter}
-              onOpenCreateDialog={() => setIsCreateDialogOpen(true)}
-              orderStatuses={orderStatuses}
-            />
+            <div className="flex flex-col sm:flex-row gap-4 mb-4">
+              <OrderDashboardControls
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                statusFilter={statusFilter}
+                setStatusFilter={setStatusFilter}
+                onOpenCreateDialog={() => setIsCreateDialogOpen(true)}
+                orderStatuses={orderStatuses}
+              />
+              <Link to="/completed-orders">
+                <Button variant="outline" className="w-full sm:w-auto">
+                  <ListChecks className="mr-2 h-4 w-4" /> View Completed Orders
+                </Button>
+              </Link>
+            </div>
 
             {orders && orders.length > 0 ? (
               <OrderList
