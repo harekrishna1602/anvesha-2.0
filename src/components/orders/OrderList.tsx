@@ -15,6 +15,21 @@ interface OrderListProps {
 }
 
 const OrderList: React.FC<OrderListProps> = ({ orders, onEditClick, onDeleteClick }) => {
+  const getStatusColorClass = (status: string) => {
+    switch (status) {
+      case 'Pending':
+        return 'text-yellow-600 dark:text-yellow-400';
+      case 'Under Production':
+        return 'text-blue-600 dark:text-blue-400';
+      case 'Ready for Dispatch':
+        return 'text-green-600 dark:text-green-400';
+      case 'Completed':
+        return 'text-gray-600 dark:text-gray-400';
+      default:
+        return 'text-gray-500 dark:text-gray-300';
+    }
+  };
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {orders.length === 0 ? (
@@ -35,7 +50,7 @@ const OrderList: React.FC<OrderListProps> = ({ orders, onEditClick, onDeleteClic
                 </div>
               </div>
               <CardTitle className="text-xl">{order.customers?.name || 'N/A'}</CardTitle>
-              <p className="text-sm text-gray-500">Status: {order.status}</p>
+              <p className={`text-sm font-medium ${getStatusColorClass(order.status)}`}>Status: {order.status}</p>
             </CardHeader>
             <CardContent className="flex-grow">
               <p className="text-sm text-gray-600">Order Date: {order.order_date ? format(new Date(order.order_date), 'PPP') : 'N/A'}</p>
