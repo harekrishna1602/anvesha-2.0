@@ -6,10 +6,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCustomer, getCustomers, deleteCustomer } from "@/services/customerService";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Trash2 } from "lucide-react";
+import { Trash2, LogOut } from "lucide-react";
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 const Index = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [newCustomerName, setNewCustomerName] = useState("");
   const [newContactPerson, setNewContactPerson] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -59,6 +62,16 @@ const Index = () => {
     });
   };
 
+  const handleSignOut = async () => {
+    const { error: signOutError } = await supabase.auth.signOut();
+    if (signOutError) {
+      toast.error(`Failed to sign out: ${signOutError.message}`);
+    } else {
+      toast.success("Signed out successfully!");
+      navigate('/login');
+    }
+  };
+
   if (isLoading) return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <p className="text-xl text-gray-600">Loading customers...</p>
@@ -72,6 +85,12 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100 p-4">
+      <div className="absolute top-4 right-4">
+        <Button variant="outline" onClick={handleSignOut}>
+          <LogOut className="mr-2 h-4 w-4" /> Sign Out
+        </Button>
+      </div>
+
       <Card className="w-full max-w-2xl mb-8">
         <CardHeader>
           <CardTitle className="text-2xl">Add New Customer</CardTitle>
