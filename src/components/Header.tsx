@@ -42,9 +42,6 @@ const Header: React.FC = () => {
             <Link to="/inventory" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               Inventory
             </Link>
-            <Link to="/completed-orders" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
-              Completed Orders
-            </Link>
           </nav>
         </div>
         <div className="flex items-center space-x-2">
