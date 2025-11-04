@@ -169,6 +169,79 @@ export type Database = {
           },
         ]
       }
+      raw_materials: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          current_stock: number
+          reorder_threshold: number
+          unit_of_measure: string
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          current_stock?: number
+          reorder_threshold?: number
+          unit_of_measure?: string
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          current_stock?: number
+          reorder_threshold?: number
+          unit_of_measure?: string
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "raw_materials_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      notifications: {
+        Row: {
+          id: string
+          user_id: string
+          type: string
+          message: string
+          is_read: boolean
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          type: string
+          message: string
+          is_read?: boolean
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          type?: string
+          message?: string
+          is_read?: boolean
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "notifications_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never

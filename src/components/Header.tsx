@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate, Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { useNavigate, Link } from 'react-router-dom';
 import { toast } from 'sonner';
 
 const Header: React.FC = () => {
@@ -34,6 +34,9 @@ const Header: React.FC = () => {
             </Link>
             <Link to="/orders" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
               Orders
+            </Link>
+            <Link to="/inventory" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              Inventory
             </Link>
           </nav>
         </div>
