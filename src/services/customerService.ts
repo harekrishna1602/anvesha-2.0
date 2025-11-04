@@ -3,7 +3,7 @@ import { TablesInsert, Tables } from '@/types/supabase';
 
 export const createCustomer = async (customer: TablesInsert<'Customers'>) => {
   const { data, error } = await supabase
-    .from('Customers')
+    .from('customers')
     .insert(customer)
     .select();
   if (error) throw error;
@@ -12,7 +12,7 @@ export const createCustomer = async (customer: TablesInsert<'Customers'>) => {
 
 export const getCustomers = async (searchTerm?: string): Promise<Tables<'Customers'>[]> => {
   let query = supabase
-    .from('Customers')
+    .from('customers')
     .select('*');
 
   if (searchTerm) {
@@ -26,7 +26,7 @@ export const getCustomers = async (searchTerm?: string): Promise<Tables<'Custome
 
 export const updateCustomer = async (id: string, customer: Partial<TablesInsert<'Customers'>>) => {
   const { data, error } = await supabase
-    .from('Customers')
+    .from('customers')
     .update(customer)
     .eq('id', id)
     .select();
@@ -36,7 +36,7 @@ export const updateCustomer = async (id: string, customer: Partial<TablesInsert<
 
 export const deleteCustomer = async (id: string) => {
   const { error } = await supabase
-    .from('Customers')
+    .from('customers')
     .delete()
     .eq('id', id);
   if (error) throw error;
