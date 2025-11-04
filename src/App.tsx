@@ -6,6 +6,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
+import Products from "./pages/Products"; // Import the new Products page
+import Orders from "./pages/Orders";     // Import the new Orders page
 import { SessionContextProvider, useSession } from "./components/SessionContextProvider";
 
 const queryClient = new QueryClient();
@@ -43,6 +45,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <Index />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/products"
+              element={
+                <ProtectedRoute>
+                  <Products />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/orders"
+              element={
+                <ProtectedRoute>
+                  <Orders />
                 </ProtectedRoute>
               }
             />

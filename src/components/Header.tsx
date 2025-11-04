@@ -4,7 +4,7 @@ import React from 'react';
 import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Import Link from react-router-dom
 import { toast } from 'sonner';
 
 const Header: React.FC = () => {
@@ -23,7 +23,20 @@ const Header: React.FC = () => {
   return (
     <header className="sticky top-0 z-10 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-16 items-center justify-between px-4 md:px-6 lg:px-8">
-        <h1 className="text-xl font-bold tracking-tight">SK INDUSTRIES</h1>
+        <div className="flex items-center space-x-4">
+          <h1 className="text-xl font-bold tracking-tight">SK INDUSTRIES</h1>
+          <nav className="flex items-center space-x-4">
+            <Link to="/" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              Customers
+            </Link>
+            <Link to="/products" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              Products
+            </Link>
+            <Link to="/orders" className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary">
+              Orders
+            </Link>
+          </nav>
+        </div>
         <Button variant="outline" onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" /> Sign Out
         </Button>
