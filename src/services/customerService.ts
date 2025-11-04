@@ -10,10 +10,16 @@ export const createCustomer = async (customer: TablesInsert<'Customers'>) => {
   return data[0];
 };
 
-export const getCustomers = async (): Promise<Tables<'Customers'>[]> => {
-  const { data, error } = await supabase
+export const getCustomers = async (searchTerm?: string): Promise<Tables<'Customers'>[]> => {
+  let query = supabase
     .from('Customers')
     .select('*');
+
+  if (searchTerm) {
+    query = query.ilike('name', `%${searchTerm}%`);
+  }
+
+  const { data, error } = await query;
   if (error) throw error;
   return data;
 };

@@ -21,10 +21,11 @@ const Index = () => {
   const [newPhone, setNewPhone] = useState("");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState<Tables<'Customers'> | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const { data: customers, isLoading, error } = useQuery({
-    queryKey: ["customers"],
-    queryFn: getCustomers,
+    queryKey: ["customers", searchTerm], // Include searchTerm in queryKey to refetch when it changes
+    queryFn: () => getCustomers(searchTerm),
   });
 
   const addCustomerMutation = useMutation({
@@ -147,6 +148,12 @@ const Index = () => {
           <CardDescription>A list of all registered customers.</CardDescription>
         </CardHeader>
         <CardContent>
+          <Input
+            placeholder="Search customers by name..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="mb-4"
+          />
           {customers && customers.length > 0 ? (
             <ul className="space-y-2">
               {customers.map((customer) => (
@@ -178,7 +185,7 @@ const Index = () => {
               ))}
             </ul>
           ) : (
-            <p className="text-gray-500">No customers added yet.</p>
+            <p className="text-gray-500">No customers found.</p>
           )}
         </CardContent>
       </Card>
