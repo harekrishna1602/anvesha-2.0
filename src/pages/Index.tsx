@@ -6,9 +6,11 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { createCustomer, getCustomers, deleteCustomer } from "@/services/customerService";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Trash2, LogOut } from "lucide-react";
+import { Trash2, LogOut, Edit } from "lucide-react";
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import EditCustomerDialog from "@/components/EditCustomerDialog";
+import { Tables } from '@/types/supabase';
 
 const Index = () => {
   const queryClient = useQueryClient();
@@ -17,6 +19,8 @@ const Index = () => {
   const [newContactPerson, setNewContactPerson] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPhone, setNewPhone] = useState("");
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState<Tables<'Customers'> | null>(null);
 
   const { data: customers, isLoading, error } = useQuery({
     queryKey: ["customers"],
@@ -60,6 +64,16 @@ const Index = () => {
       email: newEmail || null,
       phone: newPhone || null,
     });
+  };
+
+  const handleEditCustomer = (customer: Tables<'Customers'>) => {
+    setSelectedCustomer(customer);
+    setIsEditDialogOpen(true);
+  };
+
+  const handleCloseEditDialog = () => {
+    setIsEditDialogOpen(false);
+    setSelectedCustomer(null);
   };
 
   const handleSignOut = async () => {
@@ -143,14 +157,23 @@ const Index = () => {
                     {customer.email && <p className="text-xs text-gray-500">{customer.email}</p>}
                     {customer.phone && <p className="text-xs text-gray-500">{customer.phone}</p>}
                   </div>
-                  <Button
-                    variant="destructive"
-                    size="icon"
-                    onClick={() => deleteCustomerMutation.mutate(customer.id)}
-                    disabled={deleteCustomerMutation.isPending}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                  <div className="flex space-x-2">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => handleEditCustomer(customer)}
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="icon"
+                      onClick={() => deleteCustomerMutation.mutate(customer.id)}
+                      disabled={deleteCustomerMutation.isPending}
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
+                  </div>
                 </li>
               ))}
             </ul>
@@ -160,6 +183,14 @@ const Index = () => {
         </CardContent>
       </Card>
       <MadeWithDyad />
+
+      {selectedCustomer && (
+        <EditCustomerDialog
+          customer={selectedCustomer}
+          isOpen={isEditDialogOpen}
+          onClose={handleCloseEditDialog}
+        />
+      )}
     </div>
   );
 };
