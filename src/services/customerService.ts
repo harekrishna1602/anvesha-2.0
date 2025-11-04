@@ -1,7 +1,7 @@
 import { supabase } from '@/integrations/supabase/client';
 import { TablesInsert, Tables } from '@/types/supabase';
 
-export const createCustomer = async (customer: TablesInsert<'Customers'>) => {
+export const createCustomer = async (customer: Omit<TablesInsert<'customers'>, 'user_id'> & { user_id: string }) => {
   const { data, error } = await supabase
     .from('customers')
     .insert(customer)
@@ -10,12 +10,13 @@ export const createCustomer = async (customer: TablesInsert<'Customers'>) => {
   return data[0];
 };
 
-export const getCustomers = async (searchTerm?: string): Promise<Tables<'Customers'>[]> => {
+export const getCustomers = async (searchTerm?: string): Promise<Tables<'customers'>[]> => {
   let query = supabase
     .from('customers')
     .select('*');
 
   if (searchTerm) {
+    // RLS will automatically filter by user_id, we only need to filter by search term
     query = query.ilike('name', `%${searchTerm}%`);
   }
 
@@ -24,7 +25,8 @@ export const getCustomers = async (searchTerm?: string): Promise<Tables<'Custome
   return data;
 };
 
-export const updateCustomer = async (id: string, customer: Partial<TablesInsert<'Customers'>>) => {
+export const updateCustomer = async (id: string, customer: Partial<TablesInsert<'customers'>>) => {
+  // RLS ensures only the owner can update this row
   const { data, error } = await supabase
     .from('customers')
     .update(customer)
@@ -35,6 +37,7 @@ export const updateCustomer = async (id: string, customer: Partial<TablesInsert<
 };
 
 export const deleteCustomer = async (id: string) => {
+  // RLS ensures only the owner can delete this row
   const { error } = await supabase
     .from('customers')
     .delete()

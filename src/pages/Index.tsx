@@ -11,16 +11,18 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import EditCustomerDialog from "@/components/EditCustomerDialog";
 import { Tables } from '@/types/supabase';
+import { useSession } from "@/components/SessionContextProvider";
 
 const Index = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const { session } = useSession(); // Get session here
   const [newCustomerName, setNewCustomerName] = useState("");
   const [newContactPerson, setNewContactPerson] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPhone, setNewPhone] = useState("");
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [selectedCustomer, setSelectedCustomer] = useState<Tables<'Customers'> | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<Tables<'customers'> | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   const { data: customers, isLoading, error } = useQuery({
@@ -59,15 +61,22 @@ const Index = () => {
       toast.error("Customer Name is required.");
       return;
     }
+    
+    if (!session?.user?.id) {
+      toast.error("User must be logged in to add a customer.");
+      return;
+    }
+
     addCustomerMutation.mutate({
       name: newCustomerName,
       contactPerson: newContactPerson || null,
       email: newEmail || null,
       phone: newPhone || null,
+      user_id: session.user.id, // Pass user_id for RLS
     });
   };
 
-  const handleEditCustomer = (customer: Tables<'Customers'>) => {
+  const handleEditCustomer = (customer: Tables<'customers'>) => {
     setSelectedCustomer(customer);
     setIsEditDialogOpen(true);
   };

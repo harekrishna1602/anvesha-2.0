@@ -9,29 +9,43 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      Customers: {
+      customers: {
         Row: {
           contactPerson: string | null
+          created_at: string | null
           email: string | null
           id: string
           name: string
           phone: string | null
+          user_id: string | null // Added user_id
         }
         Insert: {
           contactPerson?: string | null
+          created_at?: string | null
           email?: string | null
           id?: string
           name: string
           phone?: string | null
+          user_id?: string | null // Added user_id
         }
         Update: {
           contactPerson?: string | null
+          created_at?: string | null
           email?: string | null
           id?: string
           name?: string
           phone?: string | null
+          user_id?: string | null // Added user_id
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "customers_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {

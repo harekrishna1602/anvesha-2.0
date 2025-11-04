@@ -17,7 +17,7 @@ import { updateCustomer } from '@/services/customerService';
 import { toast } from 'sonner';
 
 interface EditCustomerDialogProps {
-  customer: Tables<'Customers'> | null;
+  customer: Tables<'customers'> | null;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -39,7 +39,7 @@ const EditCustomerDialog: React.FC<EditCustomerDialogProps> = ({ customer, isOpe
   }, [customer]);
 
   const updateCustomerMutation = useMutation({
-    mutationFn: ({ id, updatedCustomer }: { id: string; updatedCustomer: Partial<Tables<'Customers'>> }) =>
+    mutationFn: ({ id, updatedCustomer }: { id: string; updatedCustomer: Partial<Tables<'customers'>> }) =>
       updateCustomer(id, updatedCustomer),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['customers'] });
