@@ -93,3 +93,22 @@ export const deleteOrderItem = async (id: string) => {
   if (error) throw error;
   return true;
 };
+
+export const getPendingOrdersCount = async (): Promise<number> => {
+  const { count, error } = await supabase
+    .from('orders')
+    .select('*', { count: 'exact', head: true })
+    .eq('status', 'Pending');
+  if (error) throw error;
+  return count || 0;
+};
+
+export const getRecentOrders = async (limit: number = 5): Promise<OrderWithDetails[]> => {
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*, customers(*), order_items(id, quantity, unit_price, products(*))')
+    .order('order_date', { ascending: false })
+    .limit(limit);
+  if (error) throw error;
+  return data as OrderWithDetails[];
+};

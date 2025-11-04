@@ -42,3 +42,12 @@ export const deleteRawMaterial = async (id: string) => {
   if (error) throw error;
   return true;
 };
+
+export const getLowStockMaterialCount = async (): Promise<number> => {
+  const { count, error } = await supabase
+    .from('raw_materials')
+    .select('*', { count: 'exact', head: true })
+    .lte('current_stock', 'reorder_threshold'); // This condition is handled by RLS for user_id
+  if (error) throw error;
+  return count || 0;
+};
