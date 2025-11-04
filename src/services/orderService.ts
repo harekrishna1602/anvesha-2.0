@@ -10,7 +10,7 @@ export const createOrder = async (order: Omit<TablesInsert<'orders'>, 'user_id'>
   const { data: orderData, error: orderError } = await supabase
     .from('orders')
     .insert(order)
-    .select()
+    .select('*, order_number') // Select the new order_number
     .single();
 
   if (orderError) throw orderError;
@@ -31,7 +31,7 @@ export const createOrder = async (order: Omit<TablesInsert<'orders'>, 'user_id'>
 export const getOrders = async (statusFilter?: Enums<'order_status'>, searchTerm?: string): Promise<OrderWithDetails[]> => {
   let query = supabase
     .from('orders')
-    .select('*, customers(*), order_items(id, quantity, unit_price, products(*))');
+    .select('*, customers(*), order_items(id, quantity, unit_price, products(*)), order_number'); // Select the new order_number
 
   if (statusFilter) {
     query = query.eq('status', statusFilter);
@@ -49,7 +49,7 @@ export const getOrders = async (statusFilter?: Enums<'order_status'>, searchTerm
 export const getOrderById = async (id: string): Promise<OrderWithDetails | null> => {
   const { data, error } = await supabase
     .from('orders')
-    .select('*, customers(*), order_items(id, quantity, unit_price, products(*))')
+    .select('*, customers(*), order_items(id, quantity, unit_price, products(*)), order_number') // Select the new order_number
     .eq('id', id)
     .single();
   if (error) throw error;
@@ -61,7 +61,7 @@ export const updateOrder = async (id: string, order: Partial<TablesInsert<'order
     .from('orders')
     .update(order)
     .eq('id', id)
-    .select();
+    .select('*, order_number'); // Select the new order_number
   if (error) throw error;
   return data[0];
 };
@@ -115,7 +115,7 @@ export const getReadyForDispatchOrdersCount = async (): Promise<number> => {
 export const getRecentOrders = async (limit: number = 5): Promise<OrderWithDetails[]> => {
   const { data, error } = await supabase
     .from('orders')
-    .select('*, customers(*), order_items(id, quantity, unit_price, products(*))')
+    .select('*, customers(*), order_items(id, quantity, unit_price, products(*)), order_number') // Select the new order_number
     .order('order_date', { ascending: false })
     .limit(limit);
   if (error) throw error;
