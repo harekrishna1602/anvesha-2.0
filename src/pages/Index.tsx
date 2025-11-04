@@ -1,4 +1,3 @@
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
@@ -10,7 +9,7 @@ import { Trash2, Edit } from "lucide-react";
 import EditCustomerDialog from "@/components/EditCustomerDialog";
 import { Tables } from '@/types/supabase';
 import { useSession } from "@/components/SessionContextProvider";
-import Header from "@/components/Header";
+import DashboardLayout from "@/components/DashboardLayout";
 
 const Index = () => {
   const queryClient = useQueryClient();
@@ -96,96 +95,92 @@ const Index = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100">
-      <Header />
-      <main className="flex flex-col items-center p-4 flex-grow">
-        <div className="w-full max-w-2xl space-y-8 mt-8">
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="text-2xl">Add New Customer</CardTitle>
-              <CardDescription>Fill in the details to add a new customer to the system.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Input
-                placeholder="Customer Name (required)"
-                value={newCustomerName}
-                onChange={(e) => setNewCustomerName(e.target.value)}
-              />
-              <Input
-                placeholder="Contact Person"
-                value={newContactPerson}
-                onChange={(e) => setNewContactPerson(e.target.value)}
-              />
-              <Input
-                placeholder="Email"
-                type="email"
-                value={newEmail}
-                onChange={(e) => setNewEmail(e.target.value)}
-              />
-              <Input
-                placeholder="Phone"
-                type="tel"
-                value={newPhone}
-                onChange={(e) => setNewPhone(e.target.value)}
-              />
-            </CardContent>
-            <CardFooter>
-              <Button onClick={handleAddCustomer} disabled={addCustomerMutation.isPending}>
-                {addCustomerMutation.isPending ? "Adding..." : "Add Customer"}
-              </Button>
-            </CardFooter>
-          </Card>
+    <DashboardLayout>
+      <div className="w-full max-w-2xl space-y-8">
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="text-2xl">Add New Customer</CardTitle>
+            <CardDescription>Fill in the details to add a new customer to the system.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Input
+              placeholder="Customer Name (required)"
+              value={newCustomerName}
+              onChange={(e) => setNewCustomerName(e.target.value)}
+            />
+            <Input
+              placeholder="Contact Person"
+              value={newContactPerson}
+              onChange={(e) => setNewContactPerson(e.target.value)}
+            />
+            <Input
+              placeholder="Email"
+              type="email"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+            />
+            <Input
+              placeholder="Phone"
+              type="tel"
+              value={newPhone}
+              onChange={(e) => setNewPhone(e.target.value)}
+            />
+          </CardContent>
+          <CardFooter>
+            <Button onClick={handleAddCustomer} disabled={addCustomerMutation.isPending}>
+              {addCustomerMutation.isPending ? "Adding..." : "Add Customer"}
+            </Button>
+          </CardFooter>
+        </Card>
 
-          <Card className="w-full">
-            <CardHeader>
-              <CardTitle className="text-2xl">Existing Customers</CardTitle>
-              <CardDescription>A list of all registered customers.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Input
-                placeholder="Search customers by name..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="mb-4"
-              />
-              {customers && customers.length > 0 ? (
-                <ul className="space-y-2">
-                  {customers.map((customer) => (
-                    <li key={customer.id} className="flex items-center justify-between p-2 border rounded-md bg-white">
-                      <div>
-                        <p className="font-medium">{customer.name}</p>
-                        {customer.contactPerson && <p className="text-sm text-gray-600">{customer.contactPerson}</p>}
-                        {customer.email && <p className="text-xs text-gray-500">{customer.email}</p>}
-                        {customer.phone && <p className="text-xs text-gray-500">{customer.phone}</p>}
-                      </div>
-                      <div className="flex space-x-2">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          onClick={() => handleEditCustomer(customer)}
-                        >
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button
-                          variant="destructive"
-                          size="icon"
-                          onClick={() => deleteCustomerMutation.mutate(customer.id)}
-                          disabled={deleteCustomerMutation.isPending}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="text-gray-500">No customers found.</p>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-      </main>
-      <MadeWithDyad />
+        <Card className="w-full">
+          <CardHeader>
+            <CardTitle className="text-2xl">Existing Customers</CardTitle>
+            <CardDescription>A list of all registered customers.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Input
+              placeholder="Search customers by name..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="mb-4"
+            />
+            {customers && customers.length > 0 ? (
+              <ul className="space-y-2">
+                {customers.map((customer) => (
+                  <li key={customer.id} className="flex items-center justify-between p-2 border rounded-md bg-white">
+                    <div>
+                      <p className="font-medium">{customer.name}</p>
+                      {customer.contactPerson && <p className="text-sm text-gray-600">{customer.contactPerson}</p>}
+                      {customer.email && <p className="text-xs text-gray-500">{customer.email}</p>}
+                      {customer.phone && <p className="text-xs text-gray-500">{customer.phone}</p>}
+                    </div>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => handleEditCustomer(customer)}
+                      >
+                        <Edit className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        variant="destructive"
+                        size="icon"
+                        onClick={() => deleteCustomerMutation.mutate(customer.id)}
+                        disabled={deleteCustomerMutation.isPending}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p className="text-gray-500">No customers found.</p>
+            )}
+          </CardContent>
+        </Card>
+      </div>
 
       {selectedCustomer && (
         <EditCustomerDialog
@@ -194,7 +189,7 @@ const Index = () => {
           onClose={handleCloseEditDialog}
         />
       )}
-    </div>
+    </DashboardLayout>
   );
 };
 
