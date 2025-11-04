@@ -3,14 +3,16 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import DashboardHome from "./pages/DashboardHome"; // Import the new DashboardHome
-import Customers from "./pages/Customers"; // Import the renamed Customers page
+import DashboardHome from "./pages/DashboardHome";
+import Customers from "./pages/Customers";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import Products from "./pages/Products";
 import Orders from "./pages/Orders";
 import Inventory from "./pages/Inventory";
-import CompletedOrders from "./pages/CompletedOrders"; // Import the new CompletedOrders page
+import CompletedOrders from "./pages/CompletedOrders";
+import Assets from "./pages/Assets"; // Import the new Assets page
+import MaintenanceCalendar from "./pages/MaintenanceCalendar"; // Import the new MaintenanceCalendar page
 import { SessionContextProvider, useSession } from "./components/SessionContextProvider";
 
 const queryClient = new QueryClient();
@@ -47,7 +49,7 @@ const App = () => (
               path="/"
               element={
                 <ProtectedRoute>
-                  <DashboardHome /> {/* New Dashboard Home */}
+                  <DashboardHome />
                 </ProtectedRoute>
               }
             />
@@ -55,7 +57,7 @@ const App = () => (
               path="/customers"
               element={
                 <ProtectedRoute>
-                  <Customers /> {/* Renamed Customers page */}
+                  <Customers />
                 </ProtectedRoute>
               }
             />
@@ -88,6 +90,22 @@ const App = () => (
               element={
                 <ProtectedRoute>
                   <CompletedOrders />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/assets"
+              element={
+                <ProtectedRoute>
+                  <Assets /> {/* New Assets page route */}
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/maintenance"
+              element={
+                <ProtectedRoute>
+                  <MaintenanceCalendar /> {/* New Maintenance Calendar page route */}
                 </ProtectedRoute>
               }
             />

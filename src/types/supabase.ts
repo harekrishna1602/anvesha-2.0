@@ -9,6 +9,47 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      assets: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          description: string | null
+          serial_number: string | null
+          purchase_date: string | null
+          warranty_expiry_date: string | null
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          description?: string | null
+          serial_number?: string | null
+          purchase_date?: string | null
+          warranty_expiry_date?: string | null
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          description?: string | null
+          serial_number?: string | null
+          purchase_date?: string | null
+          warranty_expiry_date?: string | null
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "assets_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       customers: {
         Row: {
           contactPerson: string | null
@@ -47,6 +88,89 @@ export type Database = {
           },
         ]
       }
+      maintenance_checklist_items: {
+        Row: {
+          id: string
+          task_id: string
+          description: string
+          is_completed: boolean
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          task_id: string
+          description: string
+          is_completed?: boolean
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          task_id?: string
+          description?: string
+          is_completed?: boolean
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maintenance_checklist_items_task_id_fkey"
+            columns: ["task_id"]
+            isOneToOne: false
+            referencedRelation: "maintenance_tasks"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      maintenance_tasks: {
+        Row: {
+          id: string
+          user_id: string
+          asset_id: string
+          title: string
+          description: string | null
+          scheduled_date: string
+          assigned_to: string | null
+          status: Database['public']['Enums']['maintenance_status']
+          created_at: string | null
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          asset_id: string
+          title: string
+          description?: string | null
+          scheduled_date: string
+          assigned_to?: string | null
+          status?: Database['public']['Enums']['maintenance_status']
+          created_at?: string | null
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          asset_id?: string
+          title?: string
+          description?: string | null
+          scheduled_date?: string
+          assigned_to?: string | null
+          status?: Database['public']['Enums']['maintenance_status']
+          created_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "maintenance_tasks_asset_id_fkey"
+            columns: ["asset_id"]
+            isOneToOne: false
+            referencedRelation: "assets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "maintenance_tasks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       orders: {
         Row: {
           id: string
@@ -56,6 +180,7 @@ export type Database = {
           due_date: string | null
           status: Database['public']['Enums']['order_status']
           total_amount: number
+          order_number: number
         }
         Insert: {
           id?: string
@@ -65,6 +190,7 @@ export type Database = {
           due_date?: string | null
           status?: Database['public']['Enums']['order_status']
           total_amount?: number
+          order_number?: number
         }
         Update: {
           id?: string
@@ -74,6 +200,7 @@ export type Database = {
           due_date?: string | null
           status?: Database['public']['Enums']['order_status']
           total_amount?: number
+          order_number?: number
         }
         Relationships: [
           {
@@ -251,6 +378,7 @@ export type Database = {
     }
     Enums: {
       order_status: "Pending" | "Under Production" | "Ready for Dispatch" | "Completed"
+      maintenance_status: "Scheduled" | "In Progress" | "Completed"
     }
     CompositeTypes: {
       [_ in never]: never
